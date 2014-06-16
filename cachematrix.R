@@ -1,15 +1,36 @@
-## Put comments here that give an overall description of what your
-## functions do
+## Functions makeCacheMatrix and cacheSolve are intended to reduce cost of 
+## repeated inverse matrix calculation.
+## Usage example
+## matrix <- makeCacheMatrix(sample(1:100, 9), 3, 3)
+## inverse <- cacheSolve(matrix) #first launch - inverse matrix calculated 
+##  by solven
+## inverse2 <- cacheSolve(matrix)# second launch - cached value returned
 
-## Write a short comment describing this function
+## Function returns list representation of invertible matrix. List members
+## (in order of appearance):
+## matrix - source matrix
+## setinverse - function, that should be used to set value of matrix 
+## inversion 
+## getinverse - function, that should be used to get inverted matrix 
+## representation
 
 makeCacheMatrix <- function(x = matrix()) {
-
+  matrix <- x
+  inverse <- NULL
+  setinverse <- function(inv) inverse <<- inv
+  getinverse <- function() inverse
+  list(matrix = matrix, setinverse = setinverse, getinverse = getinverse)
 }
 
 
-## Write a short comment describing this function
+## Function return inverted matrix of "invertible" matrix x. In case of 
+## repeated usage inverted matrix value cached
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+    if(is.null(x$getinverse())) {
+        #print("solving")
+        x$setinverse(solve(x$matrix,...))
+    } else {
+        x$getinverse()
+    }
 }
