@@ -29,6 +29,7 @@ makeCacheMatrix <- function(x = matrix()) {
 cacheSolve <- function(x, ...) {
     if(is.null(x$getinverse())) {
         #print("solving")
+        #"..." allow to pass additional parameters to solve
         x$setinverse(solve(x$matrix,...))
     } else {
         x$getinverse()
